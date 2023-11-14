@@ -38,7 +38,7 @@ module.exports = async function getPomo() {
 
   const rawPomos = results.map(page => {
     return {
-      "date": page.properties.Date.date.start,
+      "date": page.properties.['Created time'].date.start,
       "pomos": page.properties['Actual'].number
     }
   })
