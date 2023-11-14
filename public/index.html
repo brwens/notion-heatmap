@@ -15,88 +15,64 @@
 
 <body>
   <h1 class="text-3xl font-bold underline text-center">
-	Daily Progress
+    Daily Progress
   </h1>
   <div id="cal-heatmap" class="flex justify-center items-center my-4 text-lg"></div>
   <div id="legend-label" class="flex justify-center items-center"></div>
   <script>
-	 const cal = new CalHeatmap();
-	 cal.paint(
-	   {
-		 data: {
-		source: '/pomos',
-		 type: "json",
-		 x: "date",
-		 y: "pomos",
-		 groupY: "sum"
-		 },
-		 date: { start: new Date('2023-01-01') },
-		 range: 1,
-		 scale: { color: { type: 'linear', scheme: 'PRGn', domain: [0, 40] } },
-		 domain: {
-		   type: 'year',
-		   label: { text: null },
-		 },
-		 subDomain: { type: 'day', radius: 2 },
-		 itemSelector: '#ex-year',
-	   },
-	   [
-		 [
-		   Tooltip,
-		   {
-			 text: function (date, value, dayjsDate) {
-			   return (
-				 (value ? value + '°C' : 'No data') + ' on ' + dayjsDate.format('LL')
-			   );
-			 },
-		   },
-		 ],
-		 [
-		   Legend,
-		   {
-			 tickSize: 0,
-			 width: 150,
-			 itemSelector: '#ex-year-legend',
-			 label: 'Seattle max temperature °C',
-		   },
-		 ],
-		 [
-		   CalendarLabel,
-		   {
-			 width: 30,
-			 textAlign: 'start',
-			 text: () => dayjs.weekdaysShort().map((d, i) => (i % 2 == 0 ? '' : d)),
-		   },
-		 ],
-	   ]
-	 );
-	 
-	 render(
-	   <div>
-		 <div id="ex-year" className="margin-bottom--md"></div>
-		 <a
-		   className="button button--sm button--secondary margin-top--sm"
-		   href="#"
-		   onClick={e => {
-			 e.preventDefault();
-			 cal.previous();
-		   }}
-		 >
-		   ← Previous
-		 </a>
-		 <a
-		   className="button button--sm button--secondary margin-top--sm margin-left--xs"
-		   href="#"
-		   onClick={e => {
-			 e.preventDefault();
-			 cal.next();
-		   }}
-		 >
-		   Next →
-		 </a>
-		 <div id="ex-year-legend" style={{ float: 'right' }}></div>
-	   </div>
-	 );
+    const cal = new CalHeatmap();
+    cal.paint({
+      data: {
+        source: '/pomos',
+        type: "json",
+        x: "date",
+        y: "pomos",
+        groupY: "sum"
+      },
+      domain: {
+        type: 'month',
+        gutter: 8,
+        label: { text: 'MMM', textAlign: 'middle', position: 'top' },
+        subLabel: {
+          width: 40,
+          textAlign: 'middle',
+          text: () => dayjs.weekdaysShort().map((d, i) => (i % 2 == 0 ? d : d)),
+        },
+      },
+      subDomain: {type: 'ghDay', radius: 2, width: 11, height: 11, gutter: 4
+      },
+      date: {
+        start: new Date('2023-03-01'),
+        timezone: 'Europe/Zurich'
+      },
+      range: 10,
+      scale: {
+        color: {
+        ttype: 'linear', scheme: 'greens', domain: [0, 20]
+        }
+      }
+    }, [
+      [
+        Tooltip,
+        {
+          text: function (date, value, dayjsDate) {
+            return (
+              (value ? value + ' Notes' : 'No data') +
+              ' on ' +
+              dayjsDate.format('LL')
+            );
+          },
+        },
+      ],
+      [
+        Legend,
+        {
+          label: 'Notes Counts',
+          itemSelector: '#legend-label',
+        },
+      ],
+    ]);
+    // render(<div id="cal-heatmap"></div>);
   </script>
 </body>
 
