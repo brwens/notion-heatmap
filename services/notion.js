@@ -25,7 +25,7 @@ module.exports = async function getPomo() {
         {
           "property": "Status",
           "status": {
-            "equals": '已完成'
+            "equals": 'Done'
           }
         },]
     },
