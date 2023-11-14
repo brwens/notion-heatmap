@@ -16,7 +16,7 @@ module.exports = async function getPomo() {
     filter: {
       "and": [
         {
-          "property": "Date",
+          "property": "Created time",
           "date": {
             "is_not_empty": true,
             "before": today
@@ -30,7 +30,7 @@ module.exports = async function getPomo() {
         },]
     },
     sorts: [{
-      "property": "Date",
+      "property": "Created time",
       "direction": "ascending"
     }]
   })
@@ -39,7 +39,7 @@ module.exports = async function getPomo() {
   const rawPomos = results.map(page => {
     return {
       "date": page.properties.Date.date.start,
-      "pomos": page.properties['Actual🍅'].number
+      "pomos": page.properties['Actual'].number
     }
   })
 
